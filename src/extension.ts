@@ -1,4 +1,5 @@
 import { registerComponent } from './commands';
+import { detectComponent } from './listeners';
 import { QuickFixProvider, SnippetProvider } from './providers';
 import { commands, DocumentSelector, ExtensionContext, languages, workspace } from 'vscode';
 
@@ -25,7 +26,8 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerTextEditorCommand(`${EXTENSION_ID}.registerComponent`, registerComponent),
     languages.registerCodeActionsProvider(selector, new QuickFixProvider()),
-    languages.registerCompletionItemProvider(selector, new SnippetProvider())
+    languages.registerCompletionItemProvider(selector, new SnippetProvider()),
+    workspace.onDidChangeTextDocument(detectComponent)
   );
 }
 

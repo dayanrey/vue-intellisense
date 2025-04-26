@@ -1,4 +1,4 @@
-import { EXTENSION_ID, EXTENSION_NAME, getSettings } from './extension';
+import { EXTENSION_NAME, getSettings } from './extension';
 import { Component, find } from './finder';
 import { parse, SFCBlock, SFCScriptBlock } from './parser';
 import {
@@ -21,7 +21,7 @@ export class QuickFixProvider implements CodeActionProvider {
     const quickFixes: CodeAction[] = [];
 
     const line = document.lineAt(range.start.line).text;
-    
+
     const templateElements = [
       'main',
       'section',
@@ -37,6 +37,8 @@ export class QuickFixProvider implements CodeActionProvider {
       'input',
       'img',
       'component',
+      'RouterLink',
+      'RouterView',
     ];
     const components = find(document.uri.fsPath).map((component) => component.name);
 
@@ -46,7 +48,7 @@ export class QuickFixProvider implements CodeActionProvider {
     const multiAttrElement = line.match(
       new RegExp(
         `^(\\s*)<(${templateElements.join('|')}|${components.join('|')})` +
-          `((?:\\s+[^\\s=]+(?:\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+)))+)` +
+          `((?:\\s+[^\\s=]+(?:\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+))?)+)` +
           '\\s*(?:\\/?>|(?:>(.*?)<\\/\\2>))?$'
       )
     );
@@ -213,15 +215,7 @@ export class SnippetProvider implements CompletionItemProvider {
         documentation = `\`\`\`html\n<${component.name}|></${component.name}>`;
       }
 
-      const componentSnippet = this.createSnippet(label, insertText, documentation);
-
-      componentSnippet.command = {
-        title: `${EXTENSION_NAME}: Register Component`,
-        command: `${EXTENSION_ID}.registerComponent`,
-        arguments: [component],
-      };
-
-      return componentSnippet;
+      return this.createSnippet(label, insertText, documentation);
     });
   }
 
@@ -316,6 +310,8 @@ export class SnippetProvider implements CompletionItemProvider {
       'button',
       'form',
       'component',
+      'RouterLink',
+      'RouterView',
     ];
     const wrappers = `${templateElements.join(',')},${components
       .map((component) => component.name)
