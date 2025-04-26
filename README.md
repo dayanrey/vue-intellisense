@@ -83,6 +83,10 @@ These settings are designed to enhance your development experience by providing 
 
 ## Release Notes
 
+## 0.0.2
+
+- Improve auto import and registration of components
+
 ### 0.0.1
 
 - Initial release
