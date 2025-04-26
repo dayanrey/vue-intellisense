@@ -1,0 +1,7 @@
+{
+  "extension": ["js"],
+  "spec": "out/tests/unit/**/*.test.js",
+  "timeout": 5000,
+  "reporter": "spec",
+  "color": true
+}

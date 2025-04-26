@@ -1,0 +1,109 @@
+{
+  "name": "vue-intellisense",
+  "displayName": "Vue Intellisense",
+  "description": "Intellisense for Vue Single-File Components (SFCs)",
+  "version": "0.0.1",
+  "publisher": "dayanrey",
+  "repository": "https://github.com/dayanrey/vue-intellisense",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters"
+  ],
+  "activationEvents": [
+    "onLanguage:vue"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Vue Intellisense",
+      "properties": {
+        "vue-intellisense.SFC.api": {
+          "order": 0,
+          "type": "string",
+          "enum": [
+            "Composition API",
+            "Options API"
+          ],
+          "default": "Composition API",
+          "markdownDescription": "The preferred API Style to use with your Single-File Components (SFCs)."
+        },
+        "vue-intellisense.SFC.useScriptSetup": {
+          "order": 1,
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Use `<script setup>` within your SFC. Only applies with `Composition API`."
+        },
+        "vue-intellisense.SFC.preprocessors.script": {
+          "order": 2,
+          "type": "string",
+          "enum": [
+            "none",
+            "ts"
+          ],
+          "default": "ts",
+          "markdownDescription": "The preferred language pre-processor to use with the `<script>` and `<script setup>` blocks."
+        },
+        "vue-intellisense.SFC.preprocessors.template": {
+          "order": 3,
+          "type": "string",
+          "enum": [
+            "none",
+            "pug"
+          ],
+          "default": "none",
+          "markdownDescription": "The preferred language pre-processor to use with the `<template>` block."
+        },
+        "vue-intellisense.SFC.preprocessors.style": {
+          "order": 4,
+          "type": "string",
+          "enum": [
+            "none",
+            "less",
+            "postcss",
+            "sass",
+            "scss",
+            "stylus"
+          ],
+          "default": "none",
+          "markdownDescription": "The preferred language pre-processor to use with the `<style>`, `<style scoped>` and `<style module>` blocks."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "mocha && vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.99.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.1",
+    "eslint": "^9.23.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.27.0",
+    "node-html-parser": "^7.0.1"
+  }
+}
