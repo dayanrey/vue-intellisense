@@ -47,8 +47,6 @@ export const registerComponent = (
       );
     }
 
-    console.log('Something');
-
     return options.find((property) => isIdentifier(property.key, { name: 'components' }));
   };
   const extractImports = (block: SFCScriptBlock): ImportDeclaration[] => {
